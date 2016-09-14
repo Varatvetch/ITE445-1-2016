@@ -2,8 +2,13 @@ var playState = {
 	
 	
 	create: function(){	
-
+	this.music = game.add.audio('music');
+	this.music.loop = true;
+	this.music.play();
+	
 	this.jumpSound = game.add.audio('jump');
+	this.coinSound = game.add.audio('coin');
+	this.deadSound = game.add.audio('dead');
 	this.player = game.add.sprite(game.width/2, game.height/2, 'player');
 	//this.player2 = game.add.sprite(game.width/2, game.height/2, 'player2');
 	this.player.anchor.setTo(0.5,0.5);
@@ -83,8 +88,11 @@ collectCoin: function(player, coin) {
    this.score += 5;
   this.scoreLable.text = 'Score : ' + this.score;
   this.spawnCoins();
+  this.coinSound.play();
 },
 playerDie: function() {
+	 this.music.stop();
+	this.deadSound.play();
 		game.state.start('menu');
 		if(this.score > game.global.score){
 			game.global.score = this.score;
@@ -149,7 +157,7 @@ playerDie: function() {
 	},	
 	
 		movePlayer: function(){
-			this.jumpSound.play();
+			
 			//if(this.cursor.up.isDown) {
 				//this.player.body.velocity.y = -200;				
 			 if (this.cursor.down.isDown) {
@@ -175,6 +183,7 @@ playerDie: function() {
 			}
 			if(this.cursor.up.isDown && this.player.body.touching.down) {
 				this.player.body.velocity.y = -320;
+				this.jumpSound.play();
 		}
 		
 	},
